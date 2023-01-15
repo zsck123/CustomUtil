@@ -13,6 +13,7 @@ import java.util.function.Function;
  * @author zsck
  * @date 2023/1/14 - 13:42
  */
+@SuppressWarnings("unused")
 public class ServiceUtil {
 
     /**

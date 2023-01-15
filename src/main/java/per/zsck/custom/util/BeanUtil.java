@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
  * @author zsck
  * @date 2023/1/15 - 11:35
  */
+@SuppressWarnings("unused")
 public class BeanUtil {
 
     public static <T> T copyProperties(Object source, T target) {

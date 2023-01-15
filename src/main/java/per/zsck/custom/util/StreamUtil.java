@@ -10,8 +10,11 @@ import java.util.stream.Collectors;
  * @author zsck
  * @date 2023/1/14 - 13:27
  */
+@SuppressWarnings("unused")
 public class StreamUtil {
+
     public static <T, R> Set<R> getSetOf(Collection<T> collection, Function<T, R> function) {
         return collection.stream().map(function).collect(Collectors.toSet());
     }
+
 }
