@@ -13,9 +13,15 @@
         <maven.compiler.target>8</maven.compiler.target>
         <spring.boot.version>2.7.1</spring.boot.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <hutool.version>5.8.8</hutool.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
