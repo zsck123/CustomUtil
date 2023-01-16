@@ -1,9 +1,10 @@
-package per.zsck.custom.util;
+package per.zsck.custom.util.mybatis;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.toolkit.SimpleQuery;
+import per.zsck.custom.util.StreamUtil;
 
 import java.util.*;
 import java.util.function.Function;

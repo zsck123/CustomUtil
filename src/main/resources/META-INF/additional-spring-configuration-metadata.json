@@ -1,0 +1,20 @@
+{
+  "properties": [
+    {
+      "name": "per.zsck.custom-util.table-operation-date.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "是否开启自动填充表操作时间."
+    },{
+      "name": "per.zsck.custom-util.table-operation-date.create-date-field",
+      "type": "java.lang.String",
+      "defaultValue": "create_date",
+      "description": "创建时间字段名."
+    },{
+      "name": "per.zsck.custom-util.table-operation-date.update-date-field",
+      "type": "java.lang.String",
+      "defaultValue": "update-date",
+      "description": "更新时间字段名."
+    }
+  ]
+}

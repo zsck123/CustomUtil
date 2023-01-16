@@ -1,4 +1,4 @@
-package per.zsck.custom.util;
+package per.zsck.custom.util.spring;
 
 import org.springframework.beans.BeanUtils;
 
