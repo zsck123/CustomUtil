@@ -31,7 +31,13 @@ public class ServiceUtil {
             Collection<T> source,
             Function<T, K> functionToGetAttribute,
             SFunction<R, K> functionToGetKey) {
+
         Set<K> desSet = StreamUtil.getSetOf(source, functionToGetAttribute);
+
+        if (CollectionUtil.isEmpty(desSet)) {
+            return Collections.emptyMap();
+        }
+
         return SimpleQuery.keyMap(new LambdaQueryWrapper<R>().in(functionToGetKey, desSet), functionToGetKey);
     }
 
@@ -58,7 +64,6 @@ public class ServiceUtil {
         if (CollectionUtil.isEmpty(desSet)) {
             return Collections.emptyList();
         }
-
         return SimpleQuery.selectList(SimpleQuery.getType(functionToGetKey), new LambdaQueryWrapper<R>().in(functionToGetKey, desSet));
     }
 }
