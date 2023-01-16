@@ -2,7 +2,6 @@ package per.zsck.custom.util;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.toolkit.SimpleQuery;
 
 import java.util.Collection;
@@ -52,9 +51,9 @@ public class ServiceUtil {
     public static <T, R, K> List<R> getBatchListByAttributeOf(
             Collection<T> source,
             Function<T, K> functionToGetAttribute,
-            SFunction<R, K> functionToGetKey,
-            IService<R> service) {
+            SFunction<R, K> functionToGetKey) {
         Set<K> desSet = StreamUtil.getSetOf(source, functionToGetAttribute);
-        return service.list(new LambdaQueryWrapper<R>().in(functionToGetKey, desSet));
+        LambdaQueryWrapper<R> wrapper = new LambdaQueryWrapper<R>().in(functionToGetKey, desSet);
+        return SimpleQuery.selectList(wrapper.getEntityClass(), wrapper);
     }
 }
