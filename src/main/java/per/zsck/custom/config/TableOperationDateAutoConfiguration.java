@@ -1,5 +1,6 @@
 package per.zsck.custom.config;
 
+import cn.hutool.core.io.file.PathUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

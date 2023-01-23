@@ -3,9 +3,7 @@ package per.zsck.custom.util;
 
 import cn.hutool.core.collection.CollectionUtil;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -15,9 +13,24 @@ import java.util.stream.Collectors;
  */
 public class StreamUtil {
     public static <T, R> Set<R> getSetOf(Collection<T> collection, Function<T, R> function) {
-        if (CollectionUtil.isEmpty(collection)) {
-            return Collections.emptySet();
-        }
-        return collection.stream().map(function).collect(Collectors.toSet());
+        return CollectionUtil.isEmpty(collection) ? Collections.emptySet()
+                : collection.stream()
+                .map(function)
+                .collect(Collectors.toSet());
+    }
+    public static <T, R> List<R> getListOf(Collection<T> collection, Function<T, R> function) {
+        return CollectionUtil.isEmpty(collection) ? Collections.emptyList()
+                : collection.stream()
+                .map(function)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * K, V 都在同一集合中
+     */
+    public static <S, K, V> Map<K, V> getMapOf(Collection<S> collection, Function<S, K> keyFunction, Function<S, V> valueFunction) {
+        return CollectionUtil.isEmpty(collection) ? Collections.emptyMap()
+                : collection.stream()
+                .collect(Collectors.toMap(keyFunction, valueFunction));
     }
 }
