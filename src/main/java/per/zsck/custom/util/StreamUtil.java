@@ -26,11 +26,36 @@ public class StreamUtil {
     }
 
     /**
-     * K, V 都在同一集合中
+     * K从集合中取出，V为集合中的元素
+     */
+    public static <S, K> Map<K, S> getMapOf(Collection<S> collection, Function<S, K> keyFunction) {
+        return CollectionUtil.isEmpty(collection) ? Collections.emptyMap()
+                : collection.stream()
+                .collect(Collectors.toMap(keyFunction, Function.identity()));
+    }
+
+    /**
+     * K, V 都从集合中取出
      */
     public static <S, K, V> Map<K, V> getMapOf(Collection<S> collection, Function<S, K> keyFunction, Function<S, V> valueFunction) {
         return CollectionUtil.isEmpty(collection) ? Collections.emptyMap()
                 : collection.stream()
                 .collect(Collectors.toMap(keyFunction, valueFunction));
+    }
+
+    /**
+     * K, V 都从集合中取出, K可重复
+     */
+    public static <S, K, V> Map<K, Set<V>> getKeysSetMapOf(Collection<S> collection, Function<S, K> keyFunction, Function<S, V> valueFunction) {
+        return CollectionUtil.isEmpty(collection) ? Collections.emptyMap()
+                : collection.stream()
+                .collect(Collectors.toMap(keyFunction, entity->{
+                    Set<V> set = new HashSet<>();
+                    set.add(valueFunction.apply(entity));
+                    return set;
+                }, (oldValue, newValue)->{
+                    oldValue.addAll(newValue);
+                    return oldValue;
+                }));
     }
 }
