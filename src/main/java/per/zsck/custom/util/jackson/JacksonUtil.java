@@ -1,24 +1,28 @@
 package per.zsck.custom.util.jackson;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * @author zsck
  * @date 2023/1/24 - 0:51
  */
+@Slf4j
 @SuppressWarnings("unused")
 @Component
-public class JacksonUtil {
+public class JacksonUtil implements ApplicationRunner {
     public static ObjectMapper objectMapper;
 
     public JacksonUtil(ObjectMapper objectMapper) {
@@ -51,28 +55,27 @@ public class JacksonUtil {
         return null;
     }
 
-    public static <T> T readValue(Object content, JavaType valueType, Function<JsonNode, JsonNode> operate) {
-
-        try {
-            JsonNode jsonNode = readTree(content);
-            String realContent = toJsonString(operate.apply(jsonNode));
-            return StrUtil.isBlank(realContent)? null : objectMapper.readValue(realContent, valueType);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static <T> T readValue(Object content, JavaType valueType) {
+        return readValue(content, valueType, null);
+    }
+
+
+    public static <T> T readValue(Object content, JavaType valueType, JsonOperate operate) {
 
         try {
-            String  realContent = JacksonUtil.toJsonString(content);
+            String realContent = operate == null ? toJsonString(content) : toJsonString(operate.apply(readTree(content)));
             return StrUtil.isBlank(realContent)? null : objectMapper.readValue(realContent, valueType);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    public static <T> T readValueWithPath(Object content, JavaType valueType, JsonPath path){
+        return  readValue(content, valueType, JsonOperate.fromPath(path));
+    }
+
+
     public static <T> T readListValue(Object content, Class<T> valueType) {
         return readValue(content, getListOf(valueType));
     }
@@ -90,6 +93,13 @@ public class JacksonUtil {
             e.printStackTrace();
         }
         return StrUtil.EMPTY_JSON;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        SpringUtil.unregisterBean("objectMapper");
+        SpringUtil.unregisterBean("jacksonUtil");
+        log.info("JacksonUtil init success, unregister objectMapper and jacksonUtil");
     }
 
 }

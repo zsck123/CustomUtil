@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
  * @author zsck
  * @date 2023/1/14 - 13:27
  */
+@SuppressWarnings("unused")
 public class StreamUtil {
     public static <T, R> Set<R> getSetOf(Collection<T> collection, Function<T, R> function) {
         return CollectionUtil.isEmpty(collection) ? Collections.emptySet()
@@ -24,6 +25,7 @@ public class StreamUtil {
                 .map(function)
                 .collect(Collectors.toList());
     }
+
 
     /**
      * K从集合中取出，V为集合中的元素
@@ -55,6 +57,25 @@ public class StreamUtil {
                     return set;
                 }, (oldValue, newValue)->{
                     oldValue.addAll(newValue);
+                    return oldValue;
+                }));
+    }
+    /**
+     * K, V 都从集合中取出, K可重复
+     */
+    public static <S, K, V, VK> Map<K, Map<VK, V>> getKeysMapMapOf(Collection<S> collection,
+                                                           Function<S, K> keyFunction,
+                                                           Function<S, V> valueFunction,
+                                                           Function<V, VK> valueKeyFunction) {
+        return CollectionUtil.isEmpty(collection) ? Collections.emptyMap()
+                : collection.stream()
+                .collect(Collectors.toMap(keyFunction, entity->{
+                    Map<VK, V> map = new HashMap<>();
+                    V v = valueFunction.apply(entity);
+                    map.put(valueKeyFunction.apply(v), v);
+                    return map;
+                }, (oldValue, newValue)->{
+                    oldValue.putAll(newValue);
                     return oldValue;
                 }));
     }
