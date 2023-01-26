@@ -16,29 +16,52 @@ import java.net.URI
 
 /**
  * @author zsck
- * @date   2022/10/31 - 18:32
+ * @date   2023/1/26 - 20:04
  */
 @Suppress("unused")
-abstract class HttpBase{
+object HttpUtil{
+    private val httpBase = HttpBase()
+
+    fun doGetStr(url: String, header: Array<Header>?, params: Map<String, Any>? = null): String {
+        return httpBase.doGetStr(url, header, params, false)
+    }
+
+    fun doGetBytes(url: String, header: Array<Header>?, params: Map<String, Any>? = null): ByteArray {
+        return httpBase.doGetBytes(url, header, params, false)
+    }
+
+    fun doGetJson(url: String, header: Array<Header>?, params: Map<String, Any>? = null): JsonNode {
+        return httpBase.doGetJson(url, header, params, false)
+    }
+
+    fun doPostStr(url: String, entity: HttpEntity? = null, header: Array<Header>?): String {
+        return httpBase.doPostStr(url, entity, header, false)
+    }
+    fun doPostJson(url: String, entity: HttpEntity? = null, header: Array<Header>): JsonNode {
+        return httpBase.doPostJson(url, entity, header, false)
+    }
+}
+@Suppress("unused")
+open class HttpBase{
     private val httpClient = HttpClients.createDefault()
 
 
     @Throws(IOException::class)
-    protected fun doGetStr(url: String, header: Array<Header>? = getHeader(), params: Map<String, Any>? = null, isDefault: Boolean = true): String {
+    fun doGetStr(url: String, header: Array<Header>? = getHeader(), params: Map<String, Any>? = null, isDefault: Boolean = true): String {
         val httpGet = HttpGet(getUri(url, params))
         httpGet.setHeaders(header)
         return doHttpRequestStr(httpGet, isDefault)
     }
 
     @Throws(IOException::class)
-    protected fun doGetBytes(url: String, header: Array<Header>? = getHeader(), params: Map<String, Any>? = null, isDefault: Boolean = true): ByteArray {
+    fun doGetBytes(url: String, header: Array<Header>? = getHeader(), params: Map<String, Any>? = null, isDefault: Boolean = true): ByteArray {
         val httpGet = HttpGet( getUri(url, params) )
         httpGet.setHeaders(header)
         return doHttpRequestBytes(httpGet, isDefault)
     }
 
     @Throws(IOException::class)
-    protected fun doPostStr(url: String, entity: HttpEntity? = null, header: Array<Header>? = getHeader(), isDefault: Boolean = true): String {
+    fun doPostStr(url: String, entity: HttpEntity? = null, header: Array<Header>? = getHeader(), isDefault: Boolean = true): String {
         val httpPost = HttpPost(url)
         httpPost.setHeaders(header)
         entity?.let { httpPost.entity = it }
@@ -46,11 +69,11 @@ abstract class HttpBase{
     }
 
     @Throws(IOException::class)
-    protected fun doGetJson(url: String, header: Array<Header>? = getHeader(), params: Map<String, Any>? = null, isDefault: Boolean = true): JsonNode {
+    fun doGetJson(url: String, header: Array<Header>? = getHeader(), params: Map<String, Any>? = null, isDefault: Boolean = true): JsonNode {
         return JacksonUtil.readTree(doGetStr(url, header, params, isDefault))
     }
     @Throws(IOException::class)
-    protected fun doPostJson(url: String, entity: HttpEntity? = null, header: Array<Header>? = getHeader(), isDefault: Boolean = true): JsonNode {
+    fun doPostJson(url: String, entity: HttpEntity? = null, header: Array<Header>? = getHeader(), isDefault: Boolean = true): JsonNode {
         return JacksonUtil.readTree(doPostStr(url, entity, header, isDefault ))
     }
 
@@ -75,7 +98,7 @@ abstract class HttpBase{
         }
     }
 
-    private fun getUri(url: String, params: Map<String, Any>? = null): URI{
+    private fun getUri(url: String, params: Map<String, Any>? = null): URI {
         val uriBuilder = URIBuilder(url)
 
         params?.let {
