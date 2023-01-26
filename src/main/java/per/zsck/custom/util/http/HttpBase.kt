@@ -1,7 +1,6 @@
 package per.zsck.custom.util.http
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.http.Header
 import org.apache.http.HttpEntity
 import org.apache.http.client.methods.HttpGet
@@ -11,9 +10,9 @@ import org.apache.http.client.utils.URIBuilder
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
+import per.zsck.custom.util.jackson.JacksonUtil
 import java.io.IOException
 import java.net.URI
-import javax.annotation.Resource
 
 /**
  * @author zsck
@@ -22,10 +21,6 @@ import javax.annotation.Resource
 @Suppress("unused")
 abstract class HttpBase{
     private val httpClient = HttpClients.createDefault()
-
-
-    @Resource
-    protected lateinit var objectMapper: ObjectMapper
 
 
     @Throws(IOException::class)
@@ -52,11 +47,11 @@ abstract class HttpBase{
 
     @Throws(IOException::class)
     protected fun doGetJson(url: String, header: Array<Header>? = getHeader(), params: Map<String, Any>? = null, isDefault: Boolean = true): JsonNode {
-        return objectMapper.readTree(doGetStr(url, header, params, isDefault))
+        return JacksonUtil.readTree(doGetStr(url, header, params, isDefault))
     }
     @Throws(IOException::class)
     protected fun doPostJson(url: String, entity: HttpEntity? = null, header: Array<Header>? = getHeader(), isDefault: Boolean = true): JsonNode {
-        return objectMapper.readTree(doPostStr(url, entity, header, isDefault ))
+        return JacksonUtil.readTree(doPostStr(url, entity, header, isDefault ))
     }
 
     private fun doHttpRequestStr(httpRequestBase: HttpRequestBase, isDefault: Boolean = true): String{
