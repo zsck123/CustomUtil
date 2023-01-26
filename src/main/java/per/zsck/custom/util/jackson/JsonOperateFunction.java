@@ -9,8 +9,8 @@ import java.util.function.Function;
  * @date 2023/1/25 - 18:32
  */
 @FunctionalInterface
-public interface JsonOperate extends Function<JsonNode, JsonNode> {
-    static JsonOperate fromPath(JsonPath path) {
+public interface JsonOperateFunction extends Function<JsonNode, JsonNode> {
+    static JsonOperateFunction fromPath(JsonPath path) {
         return node -> {
             for (String s : path) {
                 node = node.get(s);
@@ -19,7 +19,7 @@ public interface JsonOperate extends Function<JsonNode, JsonNode> {
         };
     }
 
-    static JsonOperate emptyOperate() {
+    static JsonOperateFunction emptyOperate() {
         return node -> node;
     }
 }

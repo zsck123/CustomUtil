@@ -56,11 +56,11 @@ public class JacksonUtil implements ApplicationRunner {
     }
 
     public static <T> T readValue(Object content, JavaType valueType) {
-        return readValue(content, valueType, JsonOperate.emptyOperate());
+        return readValue(content, valueType, JsonOperateFunction.emptyOperate());
     }
 
 
-    public static <T> T readValue(Object content, JavaType valueType, JsonOperate operate) {
+    public static <T> T readValue(Object content, JavaType valueType, JsonOperateFunction operate) {
 
         try {
             String realContent = operate == null ? toJsonString(content) : toJsonString(operate.apply(readTree(content)));
@@ -72,14 +72,14 @@ public class JacksonUtil implements ApplicationRunner {
     }
 
     public static <T> T readValue(Object content, JavaType valueType, JsonPath path){
-        return  readValue(content, valueType, JsonOperate.fromPath(path));
+        return  readValue(content, valueType, JsonOperateFunction.fromPath(path));
     }
 
 
     public static <T> List<T> readListValue(Object content, Class<T> valueType) {
         return readValue(content, getListOf(valueType));
     }
-    public static <T> List<T> readListValue(Object content, Class<T> valueType, JsonOperate operate) {
+    public static <T> List<T> readListValue(Object content, Class<T> valueType, JsonOperateFunction operate) {
         return readValue(content, getListOf(valueType), operate);
     }
     public static <T> List<T> readListValue(Object content, Class<T> valueType, JsonPath path) {
