@@ -18,4 +18,8 @@ public interface JsonOperate extends Function<JsonNode, JsonNode> {
             return node;
         };
     }
+
+    static JsonOperate emptyOperate() {
+        return node -> node;
+    }
 }
