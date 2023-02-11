@@ -9,9 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -21,13 +18,16 @@ import java.util.List;
  */
 @Slf4j
 @SuppressWarnings("unused")
-@Component
-public class JacksonUtil implements ApplicationRunner {
+public class JacksonUtil{
+
     public static ObjectMapper objectMapper;
 
-    public JacksonUtil(ObjectMapper objectMapper) {
-        JacksonUtil.objectMapper = objectMapper;
+    static {
+
+        objectMapper = SpringUtil.getBean(ObjectMapper.class);
+
     }
+
 
     public static CollectionType getListOf(Class<?> elementClasses) {
         return objectMapper.getTypeFactory().constructCollectionType(List.class, elementClasses);
@@ -100,12 +100,4 @@ public class JacksonUtil implements ApplicationRunner {
         }
         return StrUtil.EMPTY_JSON;
     }
-
-    @Override
-    public void run(ApplicationArguments args) {
-        SpringUtil.unregisterBean("objectMapper");
-        SpringUtil.unregisterBean("jacksonUtil");
-        log.info("JacksonUtil init success, unregister objectMapper and jacksonUtil");
-    }
-
 }
