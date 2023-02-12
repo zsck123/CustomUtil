@@ -8,7 +8,7 @@ import java.util.function.Function
 import kotlin.reflect.KProperty1
 
 @Suppress("unused")
-object ServiceUtil{
+object ServiceUtilKt{
     /**
      * 根据key集合获取实体Map集合
      * key集合从{@link Collection source}中根据{@link Function functionToGetAttribute}获取
@@ -65,5 +65,9 @@ object ServiceUtil{
             // 根据functionToGetKey从R中获取属性值作为Key
             return this.list(KtQueryWrapper(R::class.java).`in`(functionToGetKey, desSet))
         }
+    }
+
+    fun IService<*>.test(){
+        println("test")
     }
 }

@@ -3,6 +3,8 @@ package per.zsck.custom.config;
 import cn.hutool.core.io.file.PathUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +25,8 @@ public class TableOperationDateAutoConfiguration {
         TableOperationDateAutoConfiguration.properties = properties;
     }
 
-    @Configuration
+
+    @ConditionalOnMissingBean(MetaObjectHandler.class)
     static class TableOperationDateMetaObjectHandler implements MetaObjectHandler {
 
 
