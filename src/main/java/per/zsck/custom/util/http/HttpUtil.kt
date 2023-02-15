@@ -22,22 +22,22 @@ import java.net.URI
 object HttpUtil{
     private val httpBase = HttpBase()
 
-    fun doGetStr(url: String, header: Array<Header>?, params: Map<String, Any>? = null): String {
+    fun doGetStr(url: String, header: Array<Header>? = null, params: Map<String, Any>? = null): String {
         return httpBase.doGetStr(url, header, params, false)
     }
 
-    fun doGetBytes(url: String, header: Array<Header>?, params: Map<String, Any>? = null): ByteArray {
+    fun doGetBytes(url: String, header: Array<Header>? = null, params: Map<String, Any>? = null): ByteArray {
         return httpBase.doGetBytes(url, header, params, false)
     }
 
-    fun doGetJson(url: String, header: Array<Header>?, params: Map<String, Any>? = null): JsonNode {
+    fun doGetJson(url: String, header: Array<Header>? = null, params: Map<String, Any>? = null): JsonNode {
         return httpBase.doGetJson(url, header, params, false)
     }
 
-    fun doPostStr(url: String, entity: HttpEntity? = null, header: Array<Header>?): String {
+    fun doPostStr(url: String, entity: HttpEntity? = null, header: Array<Header>? = null): String {
         return httpBase.doPostStr(url, entity, header, false)
     }
-    fun doPostJson(url: String, entity: HttpEntity? = null, header: Array<Header>): JsonNode {
+    fun doPostJson(url: String, entity: HttpEntity? = null, header: Array<Header> ?= null): JsonNode {
         return httpBase.doPostJson(url, entity, header, false)
     }
 }
