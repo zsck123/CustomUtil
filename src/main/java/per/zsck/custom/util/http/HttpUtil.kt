@@ -43,7 +43,8 @@ object HttpUtil{
 }
 @Suppress("unused")
 open class HttpBase{
-    private val httpClient = HttpClients.createDefault()
+
+    protected open val httpClient: CloseableHttpClient = HttpClients.createDefault()
 
 
     @Throws(IOException::class)
